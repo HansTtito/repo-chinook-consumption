@@ -1,6 +1,11 @@
 # Datos pendientes de permiso (no subir hasta confirmar con colaboradores)
 data/_pending-review/
 
+# Base biológica completa (26 columnas con estómago, morfometría, ubicación)
+# Reemplazada por chinook_model_inputs.csv para el repo público
+data/data_raw/biological-data/data_chinook_cleaned.csv
+data/data_raw/biological-data/data_chinook_limpia-Kevin.csv
+
 # Archivos R grandes (reconstruibles corriendo el pipeline)
 *.rds
 *.RData
