@@ -17,7 +17,7 @@ library(cosimmr)
 
 cat("=== CARGANDO DATOS ===\n")
 
-model_muscle_5f <- readRDS("output/cosimmr_moel_8_muscle_5sources.rds")
+model_muscle_5f <- readRDS("output/cosimmr_model_8_muscle_5sources_cov.rds")
 chinook_diet_original <- read.csv("data/data_raw/biological-data/diet_proportion_by_age.csv")
 
 cat("✅ Datos cargados\n\n")
