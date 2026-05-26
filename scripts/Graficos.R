@@ -286,7 +286,6 @@ names(raw_data) <- c("ID","Sample","date","age","fork_length","total_length","we
 
 raw_data$group <- case_when(
   str_detect(raw_data$Sample, "^m-") ~ "Salmon_muscle",
-  str_detect(raw_data$Sample, "^h-") ~ "Salmon_liver", 
   str_detect(raw_data$Sample, "^Sar") ~ "Sardine",
   str_detect(raw_data$Sample, "^Zoo") ~ "Zooplankton",
   str_detect(raw_data$Sample, "Fito") ~ "Phytoplankton",
@@ -304,7 +303,7 @@ lipid_correction_optimized_chinook <- function(d13C, CN_ratio, D = 6.31, I = 0.1
 
 raw_data <- raw_data %>%
   mutate(d13C_corrected = case_when(
-    group %in% c("Salmon_muscle", "Salmon_liver") ~ lipid_correction_optimized_chinook(d13C, CtoN),
+    group == "Salmon_muscle" ~ lipid_correction_optimized_chinook(d13C, CtoN),
     TRUE ~ d13C
   ))
 
@@ -1255,7 +1254,7 @@ library(officer)
 library(janitor)
 
 # Cargar datos
-chinook_biologico <- read.csv("data/data_raw/biological-data/data_chinook_cleaned.csv") |>
+chinook_biologico <- read.csv("data/data_raw/biological-data/chinook_model_inputs.csv") |>
   clean_names()
 
 densidad_energetica <- read.csv("data/data_raw/energy-density/energy-density-weight-by-age.csv") |>
@@ -1468,7 +1467,6 @@ names(raw_data) <- c("ID","Sample","date","age","fork_length","total_length","we
 # Asignar grupos
 raw_data$group <- case_when(
   str_detect(raw_data$Sample, "^m-")   ~ "Salmon_muscle",
-  str_detect(raw_data$Sample, "^h-")   ~ "Salmon_liver",
   str_detect(raw_data$Sample, "^Sar")  ~ "Sardine",
   str_detect(raw_data$Sample, "^Zoo")  ~ "Zooplankton",
   str_detect(raw_data$Sample, "Fito")  ~ "Phytoplankton",
@@ -1636,7 +1634,6 @@ names(raw_data) <- c("ID","Sample","date","age","fork_length","total_length",
 raw_data <- raw_data %>%
   mutate(group = case_when(
     str_detect(Sample, "^m-") ~ "Salmon_muscle",
-    str_detect(Sample, "^h-") ~ "Salmon_liver",
     str_detect(Sample, "^Sar") ~ "Sardine",
     str_detect(Sample, "^Zoo") ~ "Zooplankton",
     str_detect(Sample, "Fito") ~ "Phytoplankton",
@@ -1657,19 +1654,18 @@ lipid_correction <- function(d13C, CN, D = 6.31, I = 0.103) {
 raw_data <- raw_data %>%
   mutate(
     d13C_corrected = case_when(
-      group %in% c("Salmon_muscle", "Salmon_liver") ~ lipid_correction(d13C, CtoN),
+      group == "Salmon_muscle" ~ lipid_correction(d13C, CtoN),
       TRUE ~ d13C
     )
   )
 
 # Calcular estadísticas
 table_s1 <- raw_data %>%
-  filter(group %in% c("Salmon_muscle", "Salmon_liver",
+  filter(group %in% c("Salmon_muscle",
                       "Sardine", "Anchovy", "Zooplankton", "Phytoplankton")) %>%
   mutate(
     group_label = case_when(
       group == "Salmon_muscle" ~ paste0("Salmon muscle age-", age),
-      group == "Salmon_liver"  ~ paste0("Salmon liver age-",  age),
       TRUE ~ group
     )
   ) %>%
@@ -1695,7 +1691,6 @@ table_s1 <- raw_data %>%
 # Ordenar filas
 order_groups <- c(
   "Salmon muscle age-1", "Salmon muscle age-2", "Salmon muscle age-3",
-  "Salmon liver age-1",  "Salmon liver age-2",  "Salmon liver age-3",
   "Sardine", "Anchovy", "Zooplankton", "Phytoplankton"
 )
 

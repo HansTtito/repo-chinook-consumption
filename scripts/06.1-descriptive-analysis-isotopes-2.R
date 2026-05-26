@@ -25,7 +25,6 @@ names(raw_data) <- c("ID","Sample","date","age","fork_length","total_length","we
 # Crear columna de grupo/especie
 raw_data$group <- case_when(
   str_detect(raw_data$Sample, "^m-") ~ "Salmon_muscle",
-  str_detect(raw_data$Sample, "^h-") ~ "Salmon_liver", 
   str_detect(raw_data$Sample, "^Sar") ~ "Sardine",
   str_detect(raw_data$Sample, "^Zoo") ~ "Zooplankton",
   str_detect(raw_data$Sample, "Fito") ~ "Phytoplankton",
@@ -53,7 +52,7 @@ qc_flags <- raw_data %>%
   mutate(
     flag_pct_sum = ifelse(pct_sum > 100, "suma_%>100", ""),
     flag_CN_extreme = case_when(
-      group %in% c("Salmon_muscle", "Salmon_liver") & CtoN > 10 ~ "C/N_extremo",
+      group == "Salmon_muscle" & CtoN > 10 ~ "C/N_extremo",
       group %in% c("Sardine", "Anchovy") & CtoN > 8 ~ "C/N_extremo", 
       TRUE ~ ""
     ),
@@ -115,7 +114,7 @@ lipid_correction_optimized_chinook <- function(d13C, CN_ratio, D = 6.31, I = 0.1
 clean_data <- clean_data %>%
   mutate(
     d13C_corrected = case_when(
-      group %in% c("Salmon_muscle", "Salmon_liver") ~ lipid_correction_optimized_chinook(d13C, CtoN),
+      group == "Salmon_muscle" ~ lipid_correction_optimized_chinook(d13C, CtoN),
       TRUE ~ d13C
     )
   )

@@ -23,7 +23,6 @@ names(raw_data) <- c("ID","Sample","date","age","fork_length","total_length","we
 # Crear columna de grupo/especie
 raw_data$group <- case_when(
   str_detect(raw_data$Sample, "^m-") ~ "Salmon_muscle",
-  str_detect(raw_data$Sample, "^h-") ~ "Salmon_liver", 
   str_detect(raw_data$Sample, "^Sar") ~ "Sardina",
   str_detect(raw_data$Sample, "^Zoo") ~ "Zooplankton",
   str_detect(raw_data$Sample, "Fito") ~ "Fitoplankton",
@@ -49,7 +48,7 @@ qc_flags <- raw_data %>%
   mutate(
     flag_pct_sum = ifelse(pct_sum > 100, "suma_%>100", ""),
     flag_CN_extreme = case_when(
-      group %in% c("Salmon_muscle", "Salmon_liver") & CtoN > 10 ~ "C/N_extremo",
+      group == "Salmon_muscle" & CtoN > 10 ~ "C/N_extremo",
       group %in% c("Sardina", "Anchoveta") & CtoN > 8 ~ "C/N_extremo", 
       TRUE ~ ""
     ),
@@ -89,10 +88,9 @@ if(length(exclude_samples) > 0) {
   cat("\nNinguna muestra excluida por QC\n")
 }
 
-# Dataset limpio: MANTENER SOLO MÚSCULO DE SALMÓN + fuentes
+# Dataset limpio: músculo de salmón + fuentes
 clean_data <- qc_flags %>%
-  filter(!ID %in% exclude_samples) %>%
-  filter(group != "Salmon_liver")
+  filter(!ID %in% exclude_samples)
 
 cat("\nDataset después de QC (músculo + fuentes):", nrow(clean_data), "muestras\n")
 print(table(clean_data$group))

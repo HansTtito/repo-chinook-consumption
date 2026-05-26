@@ -17,7 +17,7 @@ library(ggplot2)
 # ---- Lectura de datos ----
 densidad_energetica_salmones <- readr$read_csv("data/data_raw/energy-density/DE_salmones.csv")
 factor_wet_dry <- read.csv("data/data_raw/energy-density/wet_dry_weight.csv")
-biologico_salmones <- readr$read_csv("data/data_raw/biological-data/data_chinook_cleaned.csv")
+biologico_salmones <- readr$read_csv("data/data_raw/biological-data/chinook_model_inputs.csv")
 
 # ---- Procesamiento de datos ----
 
@@ -248,7 +248,7 @@ print("\n=== PESOS PROMEDIO DEL ARCHIVO BIOLÓGICO ===")
 
 chinook_cleaned <- biologico_salmones |> 
   janitor$clean_names() |> 
-  dplyr$select("age", "tw_g", "location", "species", "fl_mm")
+  dplyr$select("age", "tw_g")
 
 
 pesos_promedio_edad <- chinook_cleaned |> 

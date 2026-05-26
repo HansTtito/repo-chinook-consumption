@@ -59,7 +59,7 @@ cargar_datos_base <- function(verbose = TRUE) {
   temperature_base  <- read.csv("data/data_raw/temperature/temperature_time_serie_daily.csv") |>
     dplyr::select(1, 2, 4)
 
-  chinook_biologico <- read.csv("data/data_raw/biological-data/data_chinook_cleaned.csv") |>
+  chinook_biologico <- read.csv("data/data_raw/biological-data/chinook_model_inputs.csv") |>
     clean_names()
 
   densidad_energetica <- read.csv("data/data_raw/energy-density/energy-density-weight-by-age.csv") |>
