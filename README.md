@@ -95,16 +95,12 @@ Most intermediate data files are **already provided as CSVs** in `data/`. This m
 ### R packages
 
 ```r
-# Core analysis
 install.packages(c("tidyverse", "ggplot2", "janitor", "nlstools",
                    "cosimmr", "sf", "terra", "ncdf4", "patchwork",
-                   "flextable", "officer", "box"))
-
-# Fish Bioenergetics 4.0 (from GitHub)
-remotes::install_github("Gaudeamus013/fb4package")
+                   "flextable", "officer", "box", "fb4package"))
 ```
 
-Key packages: `cosimmr` (Bayesian mixing models), `fb4package` (Fish Bioenergetics 4.0), `terra`/`ncdf4` (spatial/temperature processing), `sf` (spatial data).
+Key packages: `cosimmr` (Bayesian mixing models), `fb4package` (Fish Bioenergetics 4.0; Ttito 2026, CRAN), `terra`/`ncdf4` (spatial/temperature processing), `sf` (spatial data).
 
 ### Temperature data (Copernicus � not included)
 
