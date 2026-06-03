@@ -37,16 +37,14 @@ repo-chinook-consumption/
 ??? scripts/                              # R analysis scripts (run in order)
 ?   ??? 01-energy-density-weight-by-age.R
 ?   ??? 02-population-estimation-from-nb.R
-?   ??? 04-total-population-estimation-ocean.R
-?   ??? 06.0-descriptive-analysis-isotopes.R
-?   ??? 06.1-descriptive-analysis-isotopes-2.R
-?   ??? 06.2-mixing_models_cosimmr.R
-?   ??? 06.3-reading-mixing-models.R
-?   ??? 06.4-saving-diet-parameters-muscle.R
+?   ??? 03-total-population-estimation-ocean.R
+?   ??? 04-descriptive-analysis-isotopes.R
+?   ??? 05-mixing-models-cosimmr.R
+?   ??? 06-diet-parameters-from-mixing-models.R
 ?   ??? 07-temperature-explore.R
-?   ??? 08-age-consumption-model-individual-musculo.R
-?   ??? 09-consumption-by-river-final-muscle.R
-?   ??? 10-consumption-by-grid-final.R
+?   ??? 08-individual-consumption-model.R
+?   ??? 09-consumption-by-river.R
+?   ??? 10-consumption-by-grid.R
 ??? data/
 ?   ??? data_raw/
 ?   ?   ??? biological-data/    # chinook_model_inputs.csv, diet proportions, prey parameters
@@ -75,20 +73,19 @@ Most intermediate data files are **already provided as CSVs** in `data/`. This m
 |------|--------|-----------|-------------|---------------|
 | 1 | `01-energy-density-weight-by-age.R` | `DE_salmones.csv`, `chinook_model_inputs.csv` | `energy-density-weight-by-age.csv` | Yes |
 | 2 | `02-population-estimation-from-nb.R` | `nb_rivers.csv`, `poblacion_espinoza.csv` | `total_population_from_nb.csv` | Yes |
-| 3 | `04-total-population-estimation-ocean.R` | `age-structure-population-by-river.csv` | `poblacion_mar_global.csv`, `poblacion_total_mar_por_rio.csv` | Yes |
-| 4 | `06.0`, `06.1` | `stable-isotopes.csv` | Descriptive isotope statistics | -- |
-| 5 | `06.2-mixing_models_cosimmr.R` | `stable-isotopes.csv`, `datos_rios.csv` | `cosimmr_model_8_muscle_5sources_cov.rds` (in `output/`) | **No -- must run** |
-| 6 | `06.3-reading-mixing-models.R` | Output from step 5 | Model comparison diagnostics | -- |
-| 7 | `06.4-saving-diet-parameters-muscle.R` | Output from step 5, `diet_proportion_by_age.csv` | `diet_proportion_by_age_ISOTOPES.csv` | Yes |
-| 8 | `07-temperature-explore.R` | Copernicus GLORYS12 NetCDF (see below) | `temperature_time_serie_daily.csv` | Yes (CSV provided) |
-| 9 | `08-age-consumption-model-individual-musculo.R` | Steps 1, 3, 7, 8 outputs + `chinook_model_inputs.csv` | `resultados_total_consumption_by_age_ISOTOPES.csv`, `modelos_total_by_age_ISOTOPES.rds` | Yes (CSV provided) |
-| 10 | `09-consumption-by-river-final-muscle.R` | Steps 3 + 9 outputs | `consumo_poblacional_*_ISOTOPES.csv` | Yes |
-| 11 | `10-consumption-by-grid-final.R` | Step 9 outputs + full temperature RDS | `resultado_consumo_grillas_ISOTOPES.rds` | Requires external data |
+| 3 | `03-total-population-estimation-ocean.R` | `age-structure-population-by-river.csv` | `poblacion_mar_global.csv`, `poblacion_total_mar_por_rio.csv` | Yes |
+| 4 | `04-descriptive-analysis-isotopes.R` | `stable-isotopes.csv` | Descriptive isotope statistics, Spearman correlations | -- |
+| 5 | `05-mixing-models-cosimmr.R` | `stable-isotopes.csv`, `datos_rios.csv` | `cosimmr_model_8_muscle_5sources_cov.rds` (in `output/`) | **No — must run** |
+| 6 | `06-diet-parameters-from-mixing-models.R` | Output from step 5, `diet_proportion_by_age.csv` | `diet_proportion_by_age_ISOTOPES.csv` | Yes |
+| 7 | `07-temperature-explore.R` | Copernicus GLORYS12 NetCDF (see below) | `temperature_time_serie_daily.csv`, `total_data_temperature.rds` | **Skip** — both outputs provided |
+| 8 | `08-individual-consumption-model.R` | Steps 1, 3, 6, 7 outputs + `chinook_model_inputs.csv` | `resultados_total_consumption_by_age_ISOTOPES.csv`, `modelos_total_by_age_ISOTOPES.rds` | Yes (CSV provided) |
+| 9 | `09-consumption-by-river.R` | Steps 3 + 8 outputs | `consumo_poblacional_*_ISOTOPES.csv` | Yes |
+| 10 | `10-consumption-by-grid.R` | Step 8 RDS + step 8 CSV outputs | `resultado_consumo_grillas_ISOTOPES.rds` | Yes (RDS provided) |
 
 ### Notes on the workflow
 
-- **Step 5 (COSIMMR)** is the only step that must be run to regenerate its output. The `.rds` model file is not included in the repository (large binary file). After running `06.2`, the remaining scripts can use the saved model.
-- **Step 11 (spatial grid)** requires the full processed temperature dataset (`total_data_temperature.rds`) generated from Copernicus NetCDF files (see below). The script is included for full transparency but this output is not strictly needed to reproduce the main consumption estimates.
+- **Step 5 (COSIMMR)** is the only step that must be run to regenerate its output. The `.rds` model file is not included in the repository (large binary file). After running `05-mixing-models-cosimmr.R`, the remaining scripts can use the saved model.
+- **Step 10 (spatial grid)** uses `total_data_temperature.rds`, which is included in the repository. The script can be run directly without the raw NetCDF files.
 - All other intermediate CSVs are provided; you can start the pipeline at any step.
 
 ---
@@ -111,7 +108,7 @@ Key packages: `cosimmr` (Bayesian mixing models), `fb4package` (Fish Bioenergeti
 
 ### Temperature data (Copernicus � not included)
 
-Script `07-temperature-explore.R` requires GLORYS12 daily SST NetCDF files (2010�2024).  
+Script `07-temperature-explore.R` requires GLORYS12 daily SST NetCDF files (2010–2024).  
 Download free (registration required) from:  
 <https://data.marine.copernicus.eu/product/GLOBAL_MULTIYEAR_PHY_001_030>
 
@@ -127,17 +124,18 @@ The processed daily SST time series (`temperature_time_serie_daily.csv`) is alre
 |---------|--------|----------|-------|
 | Biological model inputs (age, weight, season) | **Included** | `data_raw/biological-data/chinook_model_inputs.csv` | Reduced from full database (7 columns) |
 | Diet proportions (stomach content) | **Included** | `data_raw/biological-data/diet_proportion_by_age.csv` | Derived - this study |
-| Diet proportions (stable isotopes) | **Included** | `data_raw/biological-data/diet_proportion_by_age_ISOTOPES.csv` | Output of COSIMMR (script 06.4) |
+| Diet proportions (stable isotopes) | **Included** | `data_raw/biological-data/diet_proportion_by_age_ISOTOPES.csv` | Output of COSIMMR (script 06) |
 | Stable isotope data | **Included** | `data_raw/diet-isotopes/stable-isotopes.csv` | Muscle tissue only |
 | Energy density | **Included** | `data_raw/energy-density/` | Salmon and prey |
 | Population estimates (Nb mark-recapture) | **Included** | `data_raw/river-population/` | This study |
 | Population estimates (Espinoza) | **Included** | `data_raw/river-population/poblacion_espinoza.csv` | Espinoza Henriquez (2023) |
-| SST time series (daily, CSV) | **Included** | `data_raw/temperature/temperature_time_serie_daily.csv` | Processed from Copernicus |
+| SST time series (daily, CSV) | **Included** | `data_raw/temperature/temperature_time_serie_daily.csv` | Processed from Copernicus GLORYS12 |
+| SST processed dataset (RDS) | **Included** | `data_raw/temperature/total_data_temperature.rds` | Required by script 10 |
 | Individual consumption results | **Included** | `data_raw/bioenergetic-model/` | Output of script 08 |
 | Population consumption results | **Included** | `data_raw/population-consumption/` | Output of scripts 09, 10 |
 | Full biological database | **Not included** | � | INVASAL monitoring program; contact corresponding author |
 | SST NetCDF (GLORYS12) | **Not included** | � | Copernicus Marine Service � see above |
-| Large model outputs (.rds) | **Not included** | � | Reproducible by running the pipeline |
+| Large model outputs (.rds) | **Not included** | — | Reproducible by running the pipeline (except temperature RDS, see above) |
 
 ---
 

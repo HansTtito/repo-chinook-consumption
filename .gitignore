@@ -1,8 +1,8 @@
 # Datos pendientes de permiso (no subir hasta confirmar con colaboradores)
 data/_pending-review/
 
-# Base biológica completa (26 columnas con estómago, morfometría, ubicación)
-# Reemplazada por chinook_model_inputs.csv para el repo público
+# Base biolÃ³gica completa (26 columnas con estÃ³mago, morfometrÃ­a, ubicaciÃ³n)
+# Reemplazada por chinook_model_inputs.csv para el repo pÃºblico
 data/data_raw/biological-data/data_chinook_cleaned.csv
 data/data_raw/biological-data/data_chinook_limpia-Kevin.csv
 
@@ -13,13 +13,16 @@ data/data_raw/biological-data/data_chinook_limpia-Kevin.csv
 
 # Datos de temperatura originales (Copernicus - no redistribuibles)
 data/data_raw/temperature/nc_files/
-data/data_raw/temperature/total_data_temperature.rds
+
+# Excepciï¿½n: RDS procesado incluido para reproducibilidad de script 12
+!data/data_raw/temperature/total_data_temperature.rds
 
 # Datos de pesca artesanal/industrial (pendiente verificacion SERNAPESCA)
 data/data_raw/presas/
 
 # Outputs intermedios y figuras generadas
-output/
+output/*
+!output/.gitkeep
 outputs/
 figures/
 *.pdf
