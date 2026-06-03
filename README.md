@@ -14,7 +14,7 @@ Code and data supporting the manuscript:
 
 ## Overview
 
-We developed an age-structured bioenergetic model to estimate marine prey consumption by naturalized Chinook salmon (*Oncorhynchus tshawytscha*) populations associated with four major river systems in south-central Chile across nine years of marine residence (2014�2022). Over the study period, Chinook salmon consumed an estimated **94,515 tonnes** of prey, with sardine (*Strangomera bentincki*, 34.8%) and anchovy (*Engraulis ringens*, 22.8%) comprising the majority of prey biomass. Annual consumption varied 17-fold (1,297�22,114 t), driven primarily by interannual variation in reconstructed at-sea abundance.
+We developed an age-structured bioenergetic model to estimate marine prey consumption by naturalized Chinook salmon (*Oncorhynchus tshawytscha*) populations associated with four major river systems in south-central Chile across nine years of marine residence (2014–2022). Over the study period, Chinook salmon consumed an estimated **94,515 tonnes** of prey, with sardine (*Strangomera bentincki*, 34.8%) and anchovy (*Engraulis ringens*, 22.8%) comprising the majority of prey biomass. Annual consumption varied 17-fold (1,297–22,114 t), driven primarily by interannual variation in reconstructed at-sea abundance.
 
 The analysis integrates:
 
@@ -26,7 +26,7 @@ The analysis integrates:
 - Population scaling by river and spatial grid
 
 Study rivers: **Tolten, Imperial, Valdivia, Rio Bueno**  
-Study period: **marine residence 2014�2022; spawning seasons 2014/15 to 2022/23**
+Study period: **marine residence 2014–2022; spawning seasons 2014/15 to 2022/23**
 
 ---
 
@@ -102,7 +102,7 @@ install.packages(c("tidyverse", "ggplot2", "janitor", "nlstools",
 
 Key packages: `cosimmr` (Bayesian mixing models), `fb4package` (Fish Bioenergetics 4.0; Ttito 2026, CRAN), `terra`/`ncdf4` (spatial/temperature processing), `sf` (spatial data).
 
-### Temperature data (Copernicus � not included)
+### Temperature data (Copernicus — not included)
 
 Script `07-temperature-explore.R` requires GLORYS12 daily SST NetCDF files (2010–2024).  
 Download free (registration required) from:  
@@ -129,8 +129,8 @@ The processed daily SST time series (`temperature_time_serie_daily.csv`) is alre
 | SST processed dataset (RDS) | **Included** | `data_raw/temperature/total_data_temperature.rds` | Required by script 10 |
 | Individual consumption results | **Included** | `data_raw/bioenergetic-model/` | Output of script 08 |
 | Population consumption results | **Included** | `data_raw/population-consumption/` | Output of scripts 09, 10 |
-| Full biological database | **Not included** | � | INVASAL monitoring program; contact corresponding author |
-| SST NetCDF (GLORYS12) | **Not included** | � | Copernicus Marine Service � see above |
+| Full biological database | **Not included** | — | INVASAL monitoring program; contact corresponding author |
+| SST NetCDF (GLORYS12) | **Not included** | — | Copernicus Marine Service — see above |
 | Large model outputs (.rds) | **Not included** | — | Reproducible by running the pipeline (except temperature RDS, see above) |
 
 ---
@@ -159,5 +159,5 @@ Data (included CSVs): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 ## Contact
 
-Hans Ttito � kvttitos@gmail.com  
-Universidad de Concepci�n, Concepci�n, Chile
+Hans Ttito — kvttitos@gmail.com  
+Universidad de Concepción, Concepción, Chile
